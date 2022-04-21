@@ -1,0 +1,87 @@
+C00C 000		jmp 	start 	skip around the variables
+000a 001 s 	dw 	10 	int s = 10, number of inputs 
+0000 002 c 	dw 	0 	int c, counter for number of inputs 
+0000 003 i 	dw 	0	int i, index
+0009 004 j 	dw 	0	int j, other index - set to size - 1 = 9
+0000 005 temp 	dw 	0	stores input temporarily 
+0000 006 prev 	dw 	0	stores current input 
+0000 007 curr 	dw 	0	stores previous input
+0001 008 one 	dw 	1
+4059 009 stit 	dw 	0	store inputs
+3059 00A ldit	dw	0	loads inputs
+0009 00B nine 	dw 	0	keeps nine (size - 1)
+3001 00C start	load	s	get s
+6002 00D	sub	c	check c < s	
+D018 00E	jmpe	loop	if c >= s, go to next loop
+3009 00F 	load	stit	forming instruction
+5002 010	add	c	storing a[c] into address
+4013 011	store	doit	storing in doit
+1000 012	readH		reading in input
+0000 013 doit 	dw 	0	starting doit instruction
+3002 014	load	c	loading c
+5008 015	add	one	adding one
+4002 016	store	c	setting c+=1
+C00C 017	jmp	start	starting loop again
+3001 018 loop1	load	s	get s
+6003 019	sub	i	check i < s
+D048 01A	jmpe	print	if i >= s, go to print 
+3004 01B loop2	load	j	get j
+6003 01C	sub	i	check j > i
+D041 01D	jmpe	loop2	if i >= j, go to loop2  --------change j back to size-1
+300A 01E 	load	ldit	loading value from a[j]
+5004 01F	add	j	adding j to get a[j]
+4021 020	store	doit2	storing in doit2
+0000 021 doit2	dw	0	declaring doit2
+4007 022	store	curr	storing in current
+300A 023 	load	ldit	loading value from a[j]
+5004 024	add	j	adding j to get a[j]
+6008 025	sub	one	subtracting one
+4027 026	store	doit3
+0000 027 doit3	dw	0
+4006 028	store	prev	storing in prev
+3006 029	load	prev	load prev
+6007 02A	sub	curr	a[j-1] - a[j],
+E03D 02B	jmpe		if prev < curr, jump to decrement j
+3007 02C swap	load	curr	load curr
+4005 02D	store	temp	temp = curr
+3006 02E	load	prev	load prev
+4007 02F	store	curr	prev = curr
+3005 030	load	temp	load temp
+4006 031	store	prev	prev = curr
+3009 032	load	stit	gets a[j]
+5004 033	add	j
+4036 034	store	doit4	storing in doit4
+3007 035	load	prev	setting a[j] = previous
+0000 036 doit4	dw	0
+3009 037	load	stit	gets a[j-1]		
+5004 038	add	j
+6008 039	sub	one
+403C 03A	store	doit5	storing in doit5
+3006 03B	load	curr	setting a[j - 1] = current
+0000 03C doit5	dw	0
+3004 03D 	load	j	get j
+6008 03E	sub	1	j--
+4004 03F 	store	j	j-= 
+C01B 040	jmp 	loop2	jumps back to first while loop2
+3003 041 i++	load	i	get i
+5008 042	add	1	i++
+4003 043 	store	i	i+=
+3001 044 	load	s	get s
+6008 045	sub	one	s - 1
+4004 046 	store	j	j = s - 1
+C018 047	jmp	loop1	restarting loop1
+3002 048 c=0	load	c	get 0
+6001 049	sub	s	c - s
+4002 04A	store	c	c now 0
+3001 04B print	load	s	get s
+6002 04C	sub	c	check c < s
+D057 04D	jmpe	xit	if c >= s, go to exit
+300A 04E 	load	ldit	loading value from a[c], c acting as second index
+5002 04F	add	c	adding c to get a[c]
+4051 050	store	doit2	storing in doit2
+0000 051 doit2 	dw 	0	starting doit2 instruction
+1800 052	printH		printing value from a[c]
+3002 053	load	c	loading c
+5008 054	add	one	adding one to c
+4002 055 	store	c	c+=1, incrementing
+C04B 056	jmp	print	restarting print
