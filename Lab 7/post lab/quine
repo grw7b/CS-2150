@@ -1,0 +1,17 @@
+
+C004 000		jmp 	start 	skip around the variables
+0010 001 s 	dw 	0 	int s = size of program
+0001 002 one 	dw 	1	used to increment i
+3000 003 ldit			function to load
+3001 004	start	load	s	loads size of program
+6011 005		sub	i	subtracts i, i stored outside of program to accommodate for incrementation
+D010 006		jmpe	s-i	checks i < program size
+3003 007		load	ldit	loads ldit so can "pull value"
+5011 008		add	i	adds i
+400A 009		store	doit	stores the value in doit
+0000 00A	doit	dw	0	holds value
+1800 00B		printH		prints value from doit
+3011 00C		load	i	loads i to increment
+5002 00D		add	one	adds one to i
+4011 00E		store	i++	i+=1
+C004 00f		jmp	start	restart loop
