@@ -1,0 +1,59 @@
+C009 000	jmp 	start 	skip around the variables
+0000 001 a 	dw 	0 	array - put values in past halt
+0000 002 s 	dw 	0 	int s, size of array
+0000 003 c 	dw 	0 	int c, use as count for input
+0000 004 i 	dw 	0	int i, index
+0000 005 zero 	dw 	0	int 0
+0001 006 one 	dw 	1	int 1
+4045 007 stit 	dw 	0	store inputs
+3045 008 ldit 	dw 	0	loads inputs	
+1000 009 start	readH		get s
+4002 00A 	store	s	set s
+3005 00B	load	zero	getting 0
+4004 00C 	store	i	set i to 0
+3002 00D loop	load	s	checking that i < size
+6004 00E 	sub	i	subbing i from s to check condition
+E01D 00F	jmpl	loop2	if i < size end loop and go to next loop
+D01D 010	jmpe	loop2	if i < size end loop and go to next loop
+3007 011 	load	stit	forming instruction
+5001 012	add	a	storing a[i] into address
+5004 013	add	i	storing a[i] into address
+4016 014	store	doit	storing in doit
+1000 015	readH		reading in input
+0000 016 doit 	dw 	0	starting doit instruction
+3004 017	load	i	loading i
+5006 018	add	one	adding one
+4004 019	store	i	setting i+=1
+C00D 01A	jmp	loop	starting loop again
+3005 01B	load	zero	loading 0
+4003 01C 	store	c	setting c to 0 for next loop
+3002 01D loop2	load	s	checking c < size
+6003 01E 	sub	c	subbing c from s to check condition
+E02D 01F	jmpl	loop3	if i < size end loop and go to next loop
+D02D 020	jmpe	loop3	if i < size end loop and go to next loop
+3008 021 	load	ldit	loading value from a[c], c acting as second index
+5003 022	add	c	adding c to get a[c]
+4024 023	store	doit2	storing in doit2
+0000 024 doit2 	dw 	0	starting doit2 instruction
+1800 025	printH		printing value from a[c]
+3003 026	load	c	loading c
+5006 027	add	one	adding one to c
+4003 028 	store	c	c+=1, incrementing
+C01D 029	jmp	loop2	starting loop2 again
+3003 02A check	load	c	now want to sub c so have right indices (ending at 0)
+6006 02B	sub	one	subtracting 1 from c
+4003 02C 	store	c	decrement c, c = c - 1
+3003 02D loop3	load	c	starting third loop by checking c >= 0 (last index)
+6005 02E	sub	zero	subbing 0 from c, c-0
+D041 02F	jmpl	xit	if condition false, jumps to xit 
+3008 030 	load	ldit	loading value from a[c], starts at last index
+5003 031	add	c	getting a[c]
+6006 032	sub	one	"subtracting" one from ldit to get last index value
+4034 033	store	doit3	storing in doit3
+0000 034 doit3 	dw 	0	starting doit3 instruction
+1800 035	printH		printing value at a[c]
+3003 036	load	c	getting sub
+6006 037	sub	one	decrementing
+4003 038	store	c	c-= c
+C02D 030	jmp	loop3	restarting loop
+0000 041 xit	halt	
